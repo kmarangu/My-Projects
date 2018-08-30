@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% block content %}
+<!-- Page Title
+		============================================= -->
+		<section id="page-title">
+
+			<div class="container clearfix">
+				<h1>Toggles &amp; Accordions</h1>
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="#">Home</a></li>
+					<li class="breadcrumb-item"><a href="#">Shortcodes</a></li>
+					<li class="breadcrumb-item active" aria-current="page">Toggles &amp; Accordions</li>
+				</ol>
+			</div>
+
+		</section><!-- #page-title end -->
+
+		<!-- Content
+		============================================= -->
+		<section id="content">
+
+			<div class="content-wrap">
+
+				<div class="container clearfix">
+
+					<!-- Post Content
+					============================================= -->
+					<div class="postcontent nobottommargin clearfix">
+
+            {% if registered %}
+              <h1>Thank you for registering!</h1>
+            {% else %}
+              <h1>Vendor Registration Form</h1>
+              <form enctype="multipart/form-data" method="POST">
+                {% csrf_token %}
+                <div class="toggle toggle-border" data-state="open">
+                							<div class="togglet"><i class="toggle-closed icon-ok-circle"></i><i class="toggle-open icon-remove-circle"></i>Vendor Info</div>
+                							<div class="togglec" style="display: none;"><p>{{ user_form.as_p }}</p></div>
+                						</div>
+
+                <div class="toggle toggle-bg">
+                            	<div class="togglet"><i class="toggle-closed icon-ok-circle"></i><i class="toggle-open icon-remove-circle"></i>Extra Vendor Information</div>
+                            	<div class="togglec" style="display: none;"><p>{{ profile_form.as_p }}</p></div>
+                            </div>
+
+                <input class="button button-3d button-xlarge button-rounded button-purple" type="submit" value="Submit for Approval" >
+
+              </form>
+            {% endif %}
+
+      </div>
+    </div>
+  </div><!-- .postcontent end -->
+</section><!-- #content end -->
+
+{% endblock %}
