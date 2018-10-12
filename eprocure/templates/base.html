@@ -2,7 +2,7 @@
 <html dir="ltr" lang="en-US">
 <head>
   {% load staticfiles %}
-
+  {% load i18n %}
 
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <meta name="author" content="SemiColonWeb" />
@@ -19,17 +19,15 @@
   <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}" type="text/css" />
 
   <link rel="stylesheet" href="{% static 'css/responsive.css' %}" type="text/css" />
-  <link rel="stylesheet" href="{% static 'css/responsive-rtl.css' %}" type="text/css" />
+  <!-- <link rel="stylesheet" href="{% static 'css/responsive-rtl.css' %}" type="text/css" /> -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- Document Title
   ============================================= -->
-  <title>Canvas | The Multi-Purpose HTML5 Template</title>
-
+  <title>events procure by Ericsoft Technologies</title>
 </head>
 
 <body class="stretched">
-
   <!-- Document Wrapper
 	============================================= -->
 	<div id="wrapper" class="clearfix">
@@ -46,35 +44,58 @@
 
 					<!-- Logo
 					============================================= -->
-					<!-- <div id="logo">
-						<a href="{% static 'index.html' %}" class="standard-logo" data-dark-logo="{% static 'images/logo-dark.png' %}"><img src="{% static 'images/logo.png' %}" alt="Canvas Logo"></a>
-						<a href="{% static 'index.html' %}" class="retina-logo" data-dark-logo="{% static 'images/logo-dark@2x.png' %}"><img src="{% static 'images/logo@2x.png' %}" alt="Canvas Logo"></a>
-					</div><!-- #logo end --> -->
+					<div id="logo">
+						<a href="{% url 'home' %}" class="standard-logo" data-dark-logo="images/logo-dark.png"><img src="{% static "images/logo.png" %}" alt="Canvas Logo"></a>
+						<a href="{% url 'home' %}" class="retina-logo" data-dark-logo="images/logo-dark@2x.png"><img src="{% static "images/logo@2x.png" %}" alt="Canvas Logo"></a>
+					</div><!-- #logo end -->
 
 					<!-- Primary Navigation
 					============================================= -->
-					<nav id="primary-menu" class="dark">
+          <!-- NAVBAR -->
+          <nav id="primary-menu" class="dark">
+            <ul>
+               <li class="menu-item"><a href="#0">How it works</a>
+                <ul class="sub-menu">
+                  <li class="menu-item"><a href="#0">For Vendors</a></li>
+                  <li class="menu-item"><a href="#0">For Event Planners</a></li>
+                </ul>
+              </li>
+              <li class="menu-item"><a href="#0">Contact</a></li>
+                {% if user.is_authenticated %}
+                  <li class="menu-item"><a href="#0">My Account</a>
+                    <ul class="sub-menu">
+                      <li class="menu-item"><a href="{% url 'test' %}">Welcome: {{ user.username }}</a></li>
+                      <li><a href="{% url 'accounts:logout' %}" class="btn btn-simple"><div>Log out</div></a></li>
+                  {% else %}
+                      <li><a href="{% url 'accounts:signup' %}" class="btn btn-simple"><div>Sign Up</div></a></li>
+                      <li><a href="{% url 'accounts:login' %}" class="btn btn-simple"><div>Log In</div></a></li>
+                  </ul>
+                {% endif %}
+            </ul>
+          </nav>
+        </div>
+			</div>
+		</header><!-- #header end -->
 
-							<ul>
-                  {% if user.is_authenticated %}
-	                      <li><a href="{% url 'accounts:logout' %}" class="btn btn-simple"><div>Log out</div></a></li>
-	                      <li><a href="{% url 'accounts:wizards' %}" class="btn btn-simple"><div>Wizard Create</div></a></li>
-	    						{% else %}
-	    						      <li><a href="{% url 'accounts:login' %}" class="btn btn-simple"><div>Log In</div></a></li>
-	    						      <li><a href="{% url 'accounts:signup' %}" class="btn btn-simple"><div>Sign Up</div></a></li>
-	                      <li><a href="{% url 'accounts:wizards' %}" class="btn btn-simple"><div>Wizard Create</div></a></li>
+          <!-- CONTENT BLOCK -->
+          <div class="content container">
+            {% block content %}
 
-	    						{% endif %}
+            {% endblock %}
+          </div>
 
-              </ul>
-          </nav><!-- #primary-menu end -->
-      	</div>
-      </div>
-    </header><!-- #header end -->
-  </div>
+        <!-- Go To Top
+        ============================================= -->
+        <div id="gotoTop" class="icon-angle-up"></div>
 
-  {% block content %}
+        <!-- External JavaScripts
+        ============================================= -->
+        <script src="{% static "js/jquery.js" %}"></script>
+        <script src="{% static "js/plugins.js" %}"></script>
 
-  {% endblock %}
+        <!-- Footer Scripts
+        ============================================= -->
+        <script src="{% static "js/functions.js" %}"></script>
+    </div>
   </body>
 </html>

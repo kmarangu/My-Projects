@@ -1,13 +1,19 @@
+import os
+from django.contrib.auth.models import User
 from django.contrib.auth import login, logout
 from django.urls import reverse_lazy
 from django.urls import reverse
 from django.http import HttpResponseRedirect, HttpResponse, Http404
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.views.generic import CreateView
+
 from formtools.wizard.views import SessionWizardView
 
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
+from django.shortcuts import render_to_response
 
 from django.core.mail import send_mail
 
@@ -15,7 +21,18 @@ from django.shortcuts import render
 from . import forms
 from . import models
 
-from accounts.forms import UserCreateForm,VendorsProfileForm,WhatYouDoForm,LocationInfoForm,CompanyProfileForm,LogoPicsForm,EventVideoForm,FirstForm,SecondForm,ThirdForm
+from django.views.generic import ListView,TemplateView,CreateView,UpdateView
+
+from accounts.models import VendorsProfile,User
+from accounts.forms import UserCreateForm,VendorsProfileForm,WhatYouDoForm,LocationInfoForm,CompanyProfileForm,LogoPicsForm,EventVideoForm
+
+class SignUp(CreateView):
+    form_class = forms.UserCreateForm
+    success_url = reverse_lazy('login')
+    template_name = 'registration/signup.html'
+
+class VendorDashboard(LoginRequiredMixin, TemplateView):
+    template_name = 'registration/vendor-dashboard.html'
 
 TEMPLATES = {
     'what_you_do': 'registration/what-you-do.html',
@@ -25,26 +42,16 @@ TEMPLATES = {
     'event_video': 'registration/event-video.html',
 }
 
-class VendorProfileWizard(SessionWizardView):
+class VendorProfileWizard(LoginRequiredMixin, SessionWizardView):
+    registered = False
+    file_storage = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, 'photos'))
 
-    file_storage = models.lg, models.pp
-
-    instance = None
+    def dispatch(self, request, *args, **kwargs):
+        self.instance = VendorsProfile()
+        return super(VendorProfileWizard, self).dispatch(request, *args, **kwargs)
 
     def get_form_instance(self, step):
-        """
-        Provides us with an instance of the Model to save on completion
-        """
-        if self.instance is None:
-            self.instance = VendorsProfile()
         return self.instance
-
-    def done(self, form_list, **kwargs):
-        """
-        Save info to the DB
-        """
-        vendors_profile = self.instance
-        vendors_profile.save()
 
     def get_template_names(self):
         """
@@ -52,9 +59,26 @@ class VendorProfileWizard(SessionWizardView):
         """
         return [TEMPLATES[self.steps.current]]
 
+    def done(self, form_list, **kwargs):
+        vendor_profile = VendorProfile(data=request.POST)
+        # Set One to One relationship between
+        # model user = Form user
+        self.instance.user = self.request.user
+        # Now save model
+        self.instance.save()
+        # Registration Successful!
+        registered = True
+        # Page to render
+        return HttpResponseRedirect(reverse("test"),
+                              {
+                              'registered':registered,
+                              'vendor_profile':vendor_profile
+                              })
+
+
 
 # Full VendorsProfile model saving function
-def SignUp(request):
+def VendorSignUp(request):
 
     registered = False
 
@@ -77,7 +101,6 @@ def SignUp(request):
             user.save()
 
             # Now we deal with the extra info!
-
             # Can't commit yet because we still need to manipulate
             profile = profile_form.save(commit=False)
 
@@ -112,73 +135,3 @@ def SignUp(request):
                           {'user_form':user_form,
                            'profile_form':profile_form,
                            'registered':registered})
-
-# Wizards view test
-class MyWizard(SessionWizardView):
-    template_name = "registration/wizard_form.html"
-    file_storage = models.img
-    instance = Item()
-
-    def dispatch(self, request, *args, **kwargs):
-        return super(MyWizard, self).dispatch(request, *args, **kwargs)
-
-    def get_form_instance(self, step):
-        return self.instance
-
-    def done(self, form_list, **kwargs):
-        self.save_model()
-        return render_to_response('done.html')
-
-
-# class MyWizard(SessionWizardView):
-#     template_name = "registration/wizard_form.html"
-#     file_storage = models.img
-#     #if you are uploading files you need to set FileSystemStorage
-#     def done(self, form_list, **kwargs):
-#         for form in form_list:
-#            print(form.initial)
-#         if not self.request.user.is_authenticated:
-#                 raise Http404
-#         id = form_list[0].cleaned_data['id']
-#         try:
-#                 item = Item.objects.get(pk=id)
-#                 ######################   SAVING ITEM   #######################
-#                 item.save()
-#                 print(item)
-#                 instance = item
-#         except:
-#                 item = None
-#                 instance = None
-#         if item and item.user != self.request.user:
-#                 print("about to raise 404")
-#                 raise Http404
-#         if not item:
-#                 instance = Item()
-#                 for form in form_list:
-#                     for field, value in form.cleaned_data.iteritems():
-#                         setattr(instance, field, value)
-#                 instance.user = self.request.user
-#                 instance.save()
-#                 return render_to_response('wizard-done.html',{ 'form_data': [form.cleaned_data for form in form_list], })
-#
-#
-# def edit_wizard(request, id):
-#     #get the object
-#     item = get_object_or_404(Item, pk=id)
-#     #make sure the item belongs to the user
-#     if item.user != request.user:
-#         raise HttpResponseForbidden()
-#     else:
-#         #get the initial data to include in the form
-#         initial = {'0': {'id': item.id,
-#                          'price': item.price,
-#                          #make sure you list every field from your form definition here to include it later in the initial_dict
-#         },
-#                    '1': {'image': item.image,
-#                    },
-#                    '2': {'description': item.description,
-#                    },
-#         }
-#         print(initial)
-#         form = MyWizard.as_view([FirstForm, SecondForm, ThirdForm], initial_dict=initial)
-#         return form(context=RequestContext(request), request=request)

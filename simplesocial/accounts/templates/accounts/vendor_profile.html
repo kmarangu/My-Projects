@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% block content %}
+
+{% if registered %}
+	<h1>Show the jobs available here!!!</h1>
+{% else %}
+	<h1>Vendor Registration Form</h1>
+	<form enctype="multipart/form-data" method="POST">
+		{% csrf_token %}
+		{{ user_form.as_p }}
+		{{ profile_form.as_p }}
+		<input class="button button-3d button-xlarge button-rounded button-purple" type="submit" value="Submit for Approval" >
+	</form>
+{% endif %}
+
+{% endblock %}

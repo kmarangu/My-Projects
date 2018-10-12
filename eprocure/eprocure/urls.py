@@ -18,6 +18,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.urls import path
 from django.conf import settings
+from django.conf.urls.static import static
 from . import views
 
 urlpatterns = [
@@ -31,7 +32,7 @@ urlpatterns = [
     url(r"^events_app/", include("events_app.urls", namespace="events_app")),
     url(r"^vendor/",include("vendor.urls", namespace="vendor")),
 
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
     import debug_toolbar

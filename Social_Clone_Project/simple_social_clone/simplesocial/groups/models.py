@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db import models
 from django.utils.text import slugify
 # from accounts.models import User
@@ -40,8 +40,8 @@ class Group(models.Model):
 
 
 class GroupMember(models.Model):
-    group = models.ForeignKey(Group, related_name="memberships")
-    user = models.ForeignKey(User,related_name='user_groups')
+    group = models.ForeignKey(Group, related_name="memberships", on_delete=models.PROTECT)
+    user = models.ForeignKey(User,related_name='user_groups', on_delete=models.PROTECT)
 
     def __str__(self):
         return self.user.username

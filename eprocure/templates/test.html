@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% block content %}
+
+<h1>Test Result = {{ filter.my_vendorsprofile.approved }}</h1>
+
+{% for vendorsprofile in my_vendorsprofile %}
+<h1>Test Result = Name:{{ vendorsprofile.user }} Phone:{{ vendorsprofile.phone_number }}</h1>
+{% if vendorsprofile.approved == True %}
+  <h1>Vendor Control Panel</h1>
+  <h1>You are already registered thank you very much.</h1>
+
+{% else %}
+  <div class="">
+    <h1>Vendor Profile</h1>
+    <a href="{% url 'accounts:vendorprofile' %}" class="btn btn-simple">
+      <div>
+        <h3><u>You don't yet have a vendor profile. Kindly fill out one.</u></h3></a>
+      </div>
+  </div>
+{% endif %}
+{% endfor %}
+{% endblock %}

@@ -1,15 +1,25 @@
+import os
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib import auth
+from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 
-lg = FileSystemStorage(location='/media/logo')
-pp = FileSystemStorage(location='/media/profile_pic')
-img = FileSystemStorage(location='/media/logo')
+from django.utils import timezone
+from django.urls import reverse
+
+from django import template
+register = template.Library()
+
+class User(auth.models.User, auth.models.PermissionsMixin):
+
+    def __str__(self):
+        return "@{}".format(self.username)
 
 class VendorsProfile(models.Model):
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    # user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField('auth.User', on_delete=models.CASCADE)
 
     # additional attributes you want to add to the table User
     service_category = models.ForeignKey(
@@ -18,8 +28,8 @@ class VendorsProfile(models.Model):
     )
     website_link = models.URLField(blank=True)
     phone_number = models.CharField(max_length=264,unique=False)
-    logo = models.ImageField(upload_to='logo',blank=True,storage=lg)
-    profile_pic = models.ImageField(upload_to='profile_pics',blank=True,storage=pp)
+    logo = models.ImageField(upload_to='logo',blank=True)
+    profile_pic = models.ImageField(upload_to='profile_pics',blank=True)
     facebook_page = models.CharField(max_length=264,unique=False)
     twitter_page = models.CharField(max_length=264,unique=False)
     address_one = models.CharField(max_length=264,unique=False)
@@ -38,11 +48,7 @@ class VendorsProfile(models.Model):
     service_area = models.CharField(max_length=264,unique=False)
     video_url = models.CharField(max_length=264,unique=False,default="video url")
     video_description = models.CharField(max_length=264,unique=False,default="description")
-
-    profile_approved = models.ForeignKey(
-        'profile_approved',
-        on_delete=models.DO_NOTHING,null=True
-    )
+    approved = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.username
@@ -55,18 +61,7 @@ class service_category(models.Model):
         return self.category
 
 class profile_approved(models.Model):
-    approved = models.CharField(max_length=100,unique=True)
+    approved = models.CharField(max_length=5,unique=True)
 
     def __str__(self):
         return self.approved
-
-# Wizard Test
-class Item(models.Model):
-    user=models.ForeignKey(User,
-    on_delete=models.DO_NOTHING)
-    price=models.DecimalField(max_digits=8,decimal_places=2)
-    image=models.ImageField(upload_to="assets/",blank=True,storage=img)
-    description=models.TextField(blank=True)
-
-    def __unicode__(self):
-        return '%s-%s' %(self.user.username, self.price)
