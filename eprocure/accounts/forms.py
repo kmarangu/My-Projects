@@ -17,14 +17,14 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.text import capfirst
 from django.utils.translation import gettext, gettext_lazy as _
 
+from events_app.models import SERVICES
+
 UserModel = get_user_model()
 
 from django import forms
-# from django.contrib.auth import get_user_model
-#used for creating user accounts
-# from django.contrib.auth.models import User
+
 from django.contrib.auth.forms import UserCreationForm
-from accounts.models import VendorsProfile
+from accounts.models import VendorsProfile, service_category
 
 class ReadOnlyPasswordHashWidget(forms.Widget):
     template_name = 'auth/widgets/read_only_password_hash.html'
@@ -415,9 +415,6 @@ class AdminPasswordChangeForm(forms.Form):
         return ['password']
 
 
-
-
-
 B_TYPE=[('SP','Sole Proprietor'),
         ('LC','Limited Company'),
         ('PS','Partnership'),
@@ -492,7 +489,10 @@ class VendorsProfileForm(forms.ModelForm):
         self.fields['video_url'].label = 'Add a link of your Youtube or Vimeo video.'
         self.fields['video_description'].label = 'Add a description for the video'
 
+
 class WhatYouDoForm(forms.ModelForm):
+
+    service_category = forms.MultipleChoiceField(required=True,choices=SERVICES,widget=forms.SelectMultiple(attrs={'class':'form-control','id':'exampleFormControlSelect2','size':'20'}))
 
     class Meta():
         model = VendorsProfile
@@ -501,10 +501,10 @@ class WhatYouDoForm(forms.ModelForm):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
 
-        self.fields['brief'].label = 'Brief Description of your business'
-        self.fields['description'].label = 'Description of your business'
-        self.fields['typical_clients'].label = 'What are your Typical Clients'
-        self.fields['service_category'].label = 'Services that you offer'
+        self.fields['brief'].label = 'Name of your business?'
+        self.fields['description'].label = 'Brief description of your business'
+        self.fields['typical_clients'].label = 'Who are your Typical Clients'
+        self.fields['service_category'].label = 'Select the services that you offer, (press CTRL to select Multiple)'
 
 class LocationInfoForm(forms.ModelForm):
 
@@ -522,6 +522,8 @@ class LocationInfoForm(forms.ModelForm):
 
 class CompanyProfileForm(forms.ModelForm):
 
+    website_link = forms.URLField(widget=forms.URLInput(attrs={'class':'form-control','id':'inputAddress','placeholder':'Website Address'}))
+    phone_number = forms.IntegerField(widget=forms.NumberInput(attrs={'class':'form-control','id':'inputAddress','placeholder':'Phone Number'}))
     b_type = forms.ChoiceField(choices=B_TYPE, widget=forms.RadioSelect())
     payments_accepted = forms.MultipleChoiceField(required=True,choices=PAYMENTS_ACCEPTED, widget=forms.CheckboxSelectMultiple())
     insurance = forms.ChoiceField(required=True,choices=INSURANCE,widget=forms.RadioSelect())
@@ -532,7 +534,7 @@ class CompanyProfileForm(forms.ModelForm):
                 'pin_number','b_type','payments_accepted','insurance')
 
     def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
+        super(CompanyProfileForm, self).__init__(*args,**kwargs)
 
         self.fields['website_link'].label = 'Website Address'
         self.fields['phone_number'].label = 'Telephone Number'

@@ -1,0 +1,14 @@
+HOW TO CREATE, PUSH & UPDATE TO GITHUB
+
+1) Create folder & cd into it
+2) git init
+3) copy files to git folder
+4) git add .
+5) git commit . -m 'enterdate'
+6) git remote add origin http://......(get your link from your github account)...
+7) git push -u origin master
+
+TO UPDATE DO:
+
+2, 4, 5, 7
+

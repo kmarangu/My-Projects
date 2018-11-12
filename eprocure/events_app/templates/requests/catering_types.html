@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% block head %}
+{{ wizard.form.media }}
+{% endblock %}
+{% block content %}
+<section id="content" style="margin-bottom: 0px;">
+<div class="content-wrap">
+  <div class="container clearfix">
+    <div class="postcontent">
+      <h3>Catering Types.</h3>
+      <p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
+      <div class="form-group">
+        <form action="" method="post" style="max-width: 45rem;">
+          {% csrf_token %}
+        <table>
+          {{ wizard.management_form }}
+          {% if wizard.form.forms %}
+            {{ wizard.form.management_form }}
+            {% for form in wizard.form.forms %}
+              {{ form|crispy }}
+            {% endfor %}
+          {% else %}
+            {{ wizard.form|crispy }}
+          {% endif %}
+        </table>
+        {% if wizard.steps.prev %}
+        <button class="btn btn-primary mt-3" type="submit" name="wizard_goto_step" value="{{ wizard.steps.first }}">First Step</button>
+        <button class="btn btn-primary mt-3" type="submit" name="wizard_goto_step" value="{{ wizard.steps.prev }}">Previous Step</button>
+        {% endif %}
+        <input class="btn btn-primary mt-3" type="submit" name="" value=Next>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+{% endblock %}

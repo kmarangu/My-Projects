@@ -21,7 +21,6 @@ class SingleGroup(generic.DetailView):
 class ListGroups(generic.ListView):
     model = Group
 
-
 class JoinGroup(LoginRequiredMixin, generic.RedirectView):
 
     def get_redirect_url(self, *args, **kwargs):
@@ -50,7 +49,6 @@ class LeaveGroup(LoginRequiredMixin, generic.RedirectView):
     def get(self, request, *args, **kwargs):
 
         try:
-
             membership = models.GroupMember.objects.filter(
                 user=self.request.user,
                 group__slug=self.kwargs.get("slug")

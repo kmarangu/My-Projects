@@ -5,9 +5,10 @@ from django.urls import reverse_lazy
 from django.urls import reverse
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
-
-from django.views.generic import CreateView
+from django.contrib.auth.mixins import(
+    LoginRequiredMixin,
+    PermissionRequiredMixin
+)
 
 from formtools.wizard.views import SessionWizardView
 
@@ -43,6 +44,7 @@ TEMPLATES = {
 }
 
 class VendorProfileWizard(LoginRequiredMixin, SessionWizardView):
+    model = VendorsProfile
     registered = False
     file_storage = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, 'photos'))
 
@@ -60,22 +62,21 @@ class VendorProfileWizard(LoginRequiredMixin, SessionWizardView):
         return [TEMPLATES[self.steps.current]]
 
     def done(self, form_list, **kwargs):
-        vendor_profile = VendorProfile(data=request.POST)
         # Set One to One relationship between
         # model user = Form user
         self.instance.user = self.request.user
+
         # Now save model
         self.instance.save()
+
         # Registration Successful!
         registered = True
         # Page to render
+
         return HttpResponseRedirect(reverse("test"),
                               {
                               'registered':registered,
-                              'vendor_profile':vendor_profile
                               })
-
-
 
 # Full VendorsProfile model saving function
 def VendorSignUp(request):

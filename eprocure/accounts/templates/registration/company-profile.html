@@ -1,4 +1,7 @@
 {% extends "base.html" %}
+<!-- crispy forms tag -->
+{% load crispy_forms_tags %}
+
 {% load bootstrap3 %}
 {% load i18n %}
 {% block head %}
@@ -9,21 +12,138 @@
 <div class="content-wrap">
   <div class="container clearfix">
     <div class="postcontent">
-      <h3>Company Information</h3>
+      <h3>Please furnish us with your company information</h3>
       <p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
-      <form action="" method="post" style="max-width: 45rem;">
+      <form action="" method="post" style="max-width: 80rem;">
         {% csrf_token %}
-      <table>
+      <!-- <table> -->
         {{ wizard.management_form }}
         {% if wizard.form.forms %}
           {{ wizard.form.management_form }}
           {% for form in wizard.form.forms %}
-            {{ form }}
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                {{ form.website_link|as_crispy_field }}
+              </div>
+              <div class="form-group col-md-6">
+                {{ form.phone_number|as_crispy_field }}
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                {{ form.facebook_page|as_crispy_field }}
+              </div>
+              <div class="form-group col-md-6">
+                {{ form.twitter_page|as_crispy_field }}
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                {{ form.address_one|as_crispy_field }}
+              </div>
+              <div class="form-group col-md-6">
+                {{ form.address_two|as_crispy_field }}
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                {{ form.town_city|as_crispy_field }}
+              </div>
+              <div class="form-group col-md-6">
+                {{ form.country|as_crispy_field }}
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                {{ form.postal_address|as_crispy_field }}
+              </div>
+              <div class="form-group col-md-6">
+                {{ form.pin_number|as_crispy_field }}
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                {{ form.b_type|as_crispy_field }}
+              </div>
+              <div class="form-group col-md-6">
+                {{ form.payments_accepted|as_crispy_field }}
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                {{ form.insurance|as_crispy_field }}
+              </div>
+            </div>
           {% endfor %}
         {% else %}
-          {{ wizard.form }}
+          <!-- {{ wizard.form|crispy }} -->
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              {{ wizard.form.website_link|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-6">
+              {{ wizard.form.phone_number|as_crispy_field }}
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              {{ wizard.form.facebook_page|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-6">
+              {{ wizard.form.twitter_page|as_crispy_field }}
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              {{ wizard.form.address_one|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-6">
+              {{ wizard.form.address_two|as_crispy_field }}
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              {{ wizard.form.town_city|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-6">
+              {{ wizard.form.country|as_crispy_field }}
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              {{ wizard.form.postal_address|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-6">
+              {{ wizard.form.pin_number|as_crispy_field }}
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              {{ wizard.form.b_type|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-6">
+              {{ wizard.form.payments_accepted|as_crispy_field }}
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              {{ wizard.form.insurance|as_crispy_field }}
+            </div>
+          </div>
         {% endif %}
-      </table>
+      <!-- </table> -->
       {% if wizard.steps.prev %}
       <button class="btn btn-primary mt-3" type="submit" name="wizard_goto_step" value="{{ wizard.steps.first }}">First Step</button>
       <button class="btn btn-primary mt-3" type="submit" name="wizard_goto_step" value="{{ wizard.steps.prev }}">Previous Step</button>

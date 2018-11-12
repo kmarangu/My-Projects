@@ -26,6 +26,7 @@ urlpatterns = [
     # url(r"^test/$", views.TestPage.as_view(), name="test"),
     url(r"^test/$", views.TestPage.as_view(), name="test"),
     url(r"^thanks/$", views.ThanksPage.as_view(), name="thanks"),
+    url(r"^contact/$", views.ContactPage.as_view(), name="contact"),
     url(r'^admin/', admin.site.urls),
     url(r"^accounts/", include("django.contrib.auth.urls")),
     url(r"^accounts/", include("accounts.urls", namespace="accounts")),

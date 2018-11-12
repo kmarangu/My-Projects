@@ -1,0 +1,105 @@
+def done(self, form_list, **kwargs):
+        # Set One to One relationship between
+        # model user = Form user
+        self.instance.user = self.request.user
+
+        # Now save model
+        self.instance.save()        
+
+        # Registration Successful!
+        registered = True
+
+        # Page to render
+        return HttpResponseRedirect(reverse("test"),
+                              {
+                              'registered':registered,
+                              })
+
+
+
+changes to add
+
+        f = self.instance(request.POST)
+        f.save(commit=False)
+        f.save_m2m()
+
+SERVICES=[
+('Marquee','Marquee'),
+('Pagodas','Pagodas'),
+('Luxury Marquees','Luxury Marquees'),
+('Capri Marquees','Capri Marquees'),
+('Traditional Pole Marquees','Traditional Pole Marquees'),
+('Tipi Hire','Tipi Hire'),
+('Bell Tents','Bell Tents'),
+('Clear span marquees','Clear span marquees'),
+('Chair covers','Chair covers'),
+('Yurts','Yurts'),
+('Party Tents','Party Tents'),
+('Furniture','Furniture'),
+('Marquee furniture','Marquee furniture'),
+('Big tops','Big tops'),
+('Stretch marquee','Stretch marquee'),
+('marquee floring','marquee floring'),
+('wedding furniture','wedding furniture'),
+('Ice Cream Rolls','Ice Cream Rolls'),
+('Italian Catering','Italian Catering'),
+('Indian Catering','Indian Catering'),
+('Kosher Catering','Kosher Catering'),
+('Goat Roast (Nyama Choma)','Goat Roast (Nyama Choma)'),
+('Location Catering','Location Catering'),
+('Bar','Bar'),
+('Halal Catering','Halal Catering'),
+('Children Caterers','Children Caterers'),
+('Caribbean Mobile Catering','Caribbean Mobile Catering'),
+('Churros','Churros'),
+('French Catering','French Catering'),
+('Fun Foods','Fun Foods'),
+('Mediterranean Catering','Mediterranean Catering'),
+('Mexican Mobile Catering','Mexican Mobile Catering'),
+('Pie & Mash Catering','Pie & Mash Catering'),
+('Vegetarian and vegan catering','Vegetarian and vegan catering'),
+('Vintage crockery hire','Vintage crockery hire'),
+('Waffles','Waffles'),
+('Caribbean Catering','Caribbean Catering'),
+('Mexican Catering','Mexican Catering'),
+('Canapes','Canapes'),
+('Asian Catering','Asian Catering'),
+('Asian Mobile Catering','Asian Mobile Catering'),
+('Berberque','Berberque'),
+('Business Lunch Catering','Business Lunch Catering'),
+('Afternoon Tea','Afternoon Tea'),
+('African Catering','African Catering'),
+('Cocktail Bars','Cocktail Bars'),
+('Coffee Bars','Coffee Bars'),
+('Food Vans','Food Vans'),
+('Pizza Vans','Pizza Vans'),
+('Crepes Vans','Crepes Vans'),
+('Fish & Chips Vans','Fish & Chips Vans'),
+('Paella Catering','Paella Catering'),
+('Sweets & Candy Carts','Sweets & Candy Carts'),
+('Jacket Potato Vans','Jacket Potato Vans'),
+('Candy Floss','Candy Floss'),
+('Tableware','Tableware'),
+('Buffets','Buffets'),
+('Cake Makers','Cake Makers'),
+('Wedding Cakes','Wedding Cakes'),
+('Corporate Event Catering','Corporate Event Catering'),
+('Dinner Party Catering','Dinner Party Catering'),
+('Private Chef','Private Chef'),
+('Mobile Caterers','Mobile Caterers'),
+('Popcorn','Popcorn'),
+('Private Party Catering','Private Party Catering'),
+('Refrigiration','Refrigiration'),
+('Wedding Catering','Wedding Catering'),
+('Burger Vans','Burger Vans'),
+('Chocolate Fountain Hire','Chocolate Fountain Hire'),
+('Cupcakes','Cupcakes'),
+('Mobile Bars','Mobile Bars'),
+('Hog Roast','Hog Roast'),
+('Prosecco Vans','Prosecco Vans'),
+('Mobile Gin Bars','Mobile Gin Bars'),
+('Ice Cream Vans','Ice Cream Vans'),
+('Ice Cream Carts','Ice Cream Carts'),
+('Hot Dog Stand Hire','Hot Dog Stand Hire'),
+('Catering Equipments','Catering Equipments'),
+]

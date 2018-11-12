@@ -1,8 +1,52 @@
-{% extends "base.html" %}
+{% extends "home.html" %}
 
-{% block content %}
+{% load staticfiles %}
+{% load i18n %}
 
-<h1>Welcome to eprocure</h1>
-</header><!-- #header end -->
-		
+{% block home %}
+<section id="slider" class="slider-element slider-parallax swiper_wrapper full-screen clearfix">
+			<div class="slider-parallax-inner">
+				<div class="swiper-container swiper-parent">
+					<div class="swiper-wrapper">
+						<div class="swiper-slide dark" style="background-image: url({% static 'images/slider/swiper/1.jpg' %});">
+							<div class="container clearfix">
+								<div class="slider-caption slider-caption-center">
+									<h2 data-caption-animate="fadeInUp">Welcome to eprocure</h2>
+									<p class="d-none d-sm-block" data-caption-animate="fadeInUp" data-caption-delay="200">Planning an event soon? Simply request a quote and get to hire the best vendors. &amp; Choose from our wide range of event vendors no more guess work.</p>
+								</div>
+							</div>
+						</div>
+						<div class="swiper-slide dark">
+							<div class="container clearfix">
+								<div class="slider-caption slider-caption-center">
+									<h2 data-caption-animate="fadeInUp">Beautifully Flexible</h2>
+									<p class="d-none d-sm-block" data-caption-animate="fadeInUp" data-caption-delay="200">Looks beautiful &amp; ultra-sharp on Retina Screen Displays. Powerful Layout with Responsive functionality that can be adapted to any screen size.</p>
+								</div>
+							</div>
+							<div class="video-wrap">
+								<source src="{% static "images/videos/explore.webm" %}" type='video/webm' />
+								<video id="slide-video" poster="{% static "images/videos/explore.jpg" %}" preload="auto" loop autoplay muted>
+									<source src="{% static "images/videos/explore.mp4" %}" type='video/mp4' />
+								</video>
+								<div class="video-overlay" style="background-color: rgba(0,0,0,0.55);"></div>
+							</div>
+						</div>
+						<div class="swiper-slide" style="background-image: url({% static 'images/slider/swiper/3.jpg' %}); background-position: center top;">
+							<div class="container clearfix">
+								<div class="slider-caption">
+									<h2 data-caption-animate="fadeInUp">Great Performance</h2>
+									<p class="d-none d-sm-block" data-caption-animate="fadeInUp" data-caption-delay="200">You'll be surprised to see the Final Results of your Creation &amp; would crave for more.</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="slider-arrow-left"><i class="icon-angle-left"></i></div>
+					<div class="slider-arrow-right"><i class="icon-angle-right"></i></div>
+				</div>
+
+				<a href="#" data-scrollto="#content" data-offset="100" class="dark one-page-arrow"><i class="icon-angle-down infinite animated fadeInDown"></i></a>
+			</div>
+</section>
+
+
 {% endblock %}

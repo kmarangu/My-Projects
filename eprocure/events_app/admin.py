@@ -1,6 +1,7 @@
 from django.contrib import admin
-from events_app.models import post,comments
-# Register your models here.
+from . import models
 
-admin.site.register(post)
-admin.site.register(comments)
+class GroupMemberInline(admin.TabularInline):
+    model = models.GroupMember
+
+admin.site.register(models.Group)

@@ -26,7 +26,12 @@ SECRET_KEY = 'h$zh^!8z7dr(8@z==eqeoe93p=0!vu$ln2%#dugn5xm!ge7i44'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = [
+'192.168.100.229',
+'192.168.100.89',
+'localhost', '127.0.0.1',
+]
 
 
 # Application definition
@@ -43,10 +48,14 @@ INSTALLED_APPS = [
     'db_file_storage',
     'debug_toolbar',
     'bootstrap3',
+    'crispy_forms',
+    'multiselectfield',
     'accounts',
     'events_app',
     'vendor',
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -150,3 +159,13 @@ LOGOUT_REDIRECT_URL = 'thanks'
 # for debug debug_toolbar
 
 INTERNAL_IPS = ['127.0.0.1']
+
+MAP_WIDGETS = {
+    "GooglePointFieldWidget": (
+        ("zoom", 15),
+        ("mapCenterLocationName", "Nairobi"),
+        ("GooglePlaceAutocompleteOptions", {'componentRestrictions': {'country': 'kenya'}}),
+        ("markerFitZoom", 12),
+    ),
+    "GOOGLE_MAP_API_KEY": "<google-api-key>"
+}

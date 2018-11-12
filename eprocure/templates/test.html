@@ -1,23 +1,26 @@
-{% extends "base.html" %}
+{% extends "home.html" %}
 {% load bootstrap3 %}
-{% block content %}
+{% block home %}
 
-<h1>Test Result = {{ filter.my_vendorsprofile.approved }}</h1>
-
-{% for vendorsprofile in my_vendorsprofile %}
-<h1>Test Result = Name:{{ vendorsprofile.user }} Phone:{{ vendorsprofile.phone_number }}</h1>
-{% if vendorsprofile.approved == True %}
-  <h1>Vendor Control Panel</h1>
-  <h1>You are already registered thank you very much.</h1>
+{% for approved in approvedstatus %}
+{% if approved.approved == True %}
+  <center>
+    <h5>Authorized Vendor</h5>
+    <Congratulations. Your profile was approved. You can now quote to potential customers.
+  </center>
 
 {% else %}
   <div class="">
-    <h1>Vendor Profile</h1>
-    <a href="{% url 'accounts:vendorprofile' %}" class="btn btn-simple">
-      <div>
-        <h3><u>You don't yet have a vendor profile. Kindly fill out one.</u></h3></a>
-      </div>
+    <center>Your Vendor Profile is awaiting approval. We will update you via your email shortly.</center>
   </div>
 {% endif %}
+
+{% empty %}
+  <div>
+    <center>
+      <u><a href="{% url 'accounts:vendorprofile' %}">
+      To become an authorized vendor you have to fill in a vendor profile form. Click here to fill out one now and you'll be able to send out quotations to potential customers.</a></u>
+    </center>
+  </div>
 {% endfor %}
 {% endblock %}

@@ -8,6 +8,9 @@ from django.core.files.storage import FileSystemStorage
 from django.utils import timezone
 from django.urls import reverse
 
+from multiselectfield import MultiSelectField
+from events_app.models import SERVICES
+
 from django import template
 register = template.Library()
 
@@ -16,18 +19,17 @@ class User(auth.models.User, auth.models.PermissionsMixin):
     def __str__(self):
         return "@{}".format(self.username)
 
+
 class VendorsProfile(models.Model):
 
     # user = models.OneToOneField(User, on_delete=models.CASCADE)
     user = models.OneToOneField('auth.User', on_delete=models.CASCADE)
 
     # additional attributes you want to add to the table User
-    service_category = models.ForeignKey(
-        'service_category',
-        on_delete=models.DO_NOTHING,
-    )
+    # service_category = models.ManyToManyField('service_category')
+    service_category = MultiSelectField(choices=SERVICES, max_choices=10)
     website_link = models.URLField(blank=True)
-    phone_number = models.CharField(max_length=264,unique=False)
+    phone_number = models.IntegerField(unique=False)
     logo = models.ImageField(upload_to='logo',blank=True)
     profile_pic = models.ImageField(upload_to='profile_pics',blank=True)
     facebook_page = models.CharField(max_length=264,unique=False)
@@ -55,7 +57,7 @@ class VendorsProfile(models.Model):
 
 
 class service_category(models.Model):
-    category = models.CharField(max_length=100,unique=True)
+    category = models.CharField(max_length=1000,unique=True)
 
     def __str__(self):
         return self.category

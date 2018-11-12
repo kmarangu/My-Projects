@@ -1,23 +1,97 @@
 from django.conf.urls import url
+from django.contrib.auth import views as auth_views
 from . import views
 
-#Template tagging
+from events_app.forms import (
+                                ServiceCategoryForm,
+                                ServiceCategoryFS1Form,
+                                ServiceCategoryFS2Form,
+                                CateringTypesForm,
+                                StartersDesertsForm,
+                                DietaryRequirementsForm,
+                                BuffetTypesForm,
+                                VenueTypeForm,
+                                GuestsExpectedForm,
+                                ChildrenCountForm,
+                                PaymentTermsForm,
+                                ServiceLevelForm,
+                                EventTypeForm,
+                                EventVenueForm,
+                                EventDateForm,
+                                MessageToVendorForm,
+                                ContactMobileForm,
+                                AuthorsRoleForm,
+                                TermsConditionsForm,
+        )
+
 app_name = 'events_app'
 
-urlpatterns= [
-    url(r'^relative/$',views.vendors,name='vendors'),
-    url(r'^how_o/$',views.how_o,name='how_it_works_organizers'),
-    url(r'^how_s/$',views.how_s,name='how_it_works_suppliers'),
-    # patterns for request quote rendering
-    url(r'^$',views.PostListView.as_view(),name='post_list'),
-    url(r'^about/$',views.AboutView.as_view(),name='about'),
-    url(r'^post/(?P<pk>\d+)$',views.PostDetailView.as_view(),name='post_detail'),
-    url(r'^post/new/$',views.CreatePostView.as_view(),name='post_new'),
-    url(r'^post/(?P<pk>\d+)/edit/$',views.PostUpdateView.as_view(),name='post_edit'),
-    url(r'^post/(?P<pk>\d+)/remove/$',views.PostDeleteView.as_view(),name='post_remove'),
-    url(r'^drafts/$',views.DraftListView.as_view(),name='post_draft_list'),
-    url(r'^post/(?P<pk>\d+)/comment/$',views.add_comments_to_post,name='add_comments_to_post'),
-    url(r'^comment/(?P<pk>\d+)/approve/$',views.comment_approve,name='comment_approve'),
-    url(r'^comment/(?P<pk>\d+)/remove/$',views.comment_remove,name='comment_remove'),
-    url(r'^post/(?P<pk>\d+)/publish/$',views.post_publish,name='post_publish'),
+FORMS_ALL = [
+        ('service_category', ServiceCategoryForm),
+        ('service_category_FS1', ServiceCategoryFS1Form),
+        ('service_category_FS2', ServiceCategoryFS2Form),
+        ('catering_types', CateringTypesForm),
+        ('starters_deserts', StartersDesertsForm),
+        ('dietary_requirements', DietaryRequirementsForm),
+        ('buffet_types', BuffetTypesForm),
+        ('venue_type', VenueTypeForm),
+        ('guests_expected', GuestsExpectedForm),
+        ('children_count', ChildrenCountForm),
+        ('payment_terms', PaymentTermsForm),
+        ('service_level',ServiceLevelForm),
+        ('event_type', EventTypeForm),
+        ('event_venue', EventVenueForm),
+        ('event_date', EventDateForm),
+        ('message_to_vendor', MessageToVendorForm),
+        ('contact_mobile', ContactMobileForm),
+        ('authors_role', AuthorsRoleForm),
+        ('terms_conditions', TermsConditionsForm),
+    ]
+
+FORMS_SET_1 = [
+        ('service_category_FS1', ServiceCategoryFS1Form),
+        ('starters_deserts', StartersDesertsForm),
+        ('dietary_requirements', DietaryRequirementsForm),
+        ('venue_type', VenueTypeForm),
+        ('guests_expected', GuestsExpectedForm),
+        ('children_count', ChildrenCountForm),
+        ('payment_terms', PaymentTermsForm),
+        ('service_level',ServiceLevelForm),
+        ('event_type', EventTypeForm),
+        ('event_venue', EventVenueForm),
+        ('event_date', EventDateForm),
+        ('message_to_vendor', MessageToVendorForm),
+        ('contact_mobile', ContactMobileForm),
+        ('authors_role', AuthorsRoleForm),
+        ('terms_conditions', TermsConditionsForm),
+    ]
+
+FORMS_SET_2 = [
+        ('service_category_FS2', ServiceCategoryFS2Form),
+        ('buffet_types', BuffetTypesForm),
+        ('starters_deserts', StartersDesertsForm),
+        ('dietary_requirements', DietaryRequirementsForm),
+        ('venue_type', VenueTypeForm),
+        ('guests_expected', GuestsExpectedForm),
+        ('children_count', ChildrenCountForm),
+        ('payment_terms', PaymentTermsForm),
+        ('service_level',ServiceLevelForm),
+        ('event_type', EventTypeForm),
+        ('event_venue', EventVenueForm),
+        ('event_date', EventDateForm),
+        ('message_to_vendor', MessageToVendorForm),
+        ('contact_mobile', ContactMobileForm),
+        ('authors_role', AuthorsRoleForm),
+        ('terms_conditions', TermsConditionsForm),
+    ]
+
+urlpatterns = [
+    url(r"^$", views.ListGroups.as_view(), name="all"),
+    url(r"^new/$", views.CreateGroup.as_view(), name="create"),
+    url(r"^posts/in/(?P<slug>[-\w]+)/$",views.SingleGroup.as_view(),name="single"),
+    url(r"join/(?P<slug>[-\w]+)/$",views.JoinGroup.as_view(),name="join"),
+    url(r"leave/(?P<slug>[-\w]+)/$",views.LeaveGroup.as_view(),name="leave"),
+    url(r'^formset1/add/$',views.FORMS_SET_1_Wizard.as_view(FORMS_SET_1),name='formset1'),
+    url(r'^formset2/add/$',views.FORMS_SET_2_Wizard.as_view(FORMS_SET_2),name='formset2'),
+
 ]

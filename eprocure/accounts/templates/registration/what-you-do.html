@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 {% load bootstrap3 %}
 {% load i18n %}
 {% block head %}
@@ -9,7 +10,7 @@
 <div class="content-wrap">
   <div class="container clearfix">
     <div class="postcontent">
-      <h3>What you Do</h3>
+      <h3>Please tell us more about your business.</h3>
       <p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
       <div class="form-group">
         <form action="" method="post" style="max-width: 45rem;">
@@ -19,10 +20,10 @@
           {% if wizard.form.forms %}
             {{ wizard.form.management_form }}
             {% for form in wizard.form.forms %}
-              {{ form }}
+              {{ form|crispy }}
             {% endfor %}
-          {% else %}
-            {{ wizard.form }}
+          {% else %}          
+            {{ wizard.form|crispy }}
           {% endif %}
         </table>
         {% if wizard.steps.prev %}
@@ -31,7 +32,7 @@
         {% endif %}
         <input class="btn btn-primary mt-3" type="submit" name="" value=Next>
         </form>
-      </div>      
+      </div>
     </div>
   </div>
 </div>

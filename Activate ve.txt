@@ -4,7 +4,6 @@ cd C:\Users\user\Miniconda3\Scripts
 activate mydjangoenv
 cd/
 E:
-cd E:\One Drive Data\Main Box\Ericsoft Technologies\Python\DJANGO-COURSE-FILES\Django-Python-Full-Stack-Web-Devloper-master\eprocure
+cd E:\One Drive Data\Main Box\Ericsoft Technologies\Python\DJANGO-COURSE-FILES\Django-Python-Full-Stack-Web-Devloper-master\git_projects_code\eprocure
 
 python manage.py runserver
-S
